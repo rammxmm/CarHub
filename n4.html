@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Ventas - CarHub</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --card-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --accent-color: #fffcfd;
+            --header-color: #000000;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--header-color);
+            padding: 1rem 5%;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        main {
+            padding: 2rem 5%;
+        }
+
+        .product {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: var(--card-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .product img {
+            width: 80px;
+            height: 80px;
+            margin-right: 1rem;
+            border-radius: 8px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-details h3 {
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        .product-details p {
+            margin: 0.25rem 0;
+        }
+
+        .product button {
+            padding: 0.5rem 1rem;
+            color: #ffffff;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .product button:hover {
+            background-color: #d9d6d7;
+        }
+
+        #cart {
+            margin-top: 2rem;
+        }
+
+        #cart ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #cart ul li {
+            background-color: var(--card-color);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .total {
+            font-weight: bold;
+            margin-top: 1rem;
+            color: var(--accent-color);
+        }
+
+        #checkout {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent-color);
+            color: #000000;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #checkout:hover {
+            background-color: #d9d6d7;
+        }
+
+        footer {
+            background-color: var(--header-color);
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src=HUBB.jpg alt="rmwbco web & software" class="logo">        
+        <nav>
+            <a href="index.html" class="nav-item">Inicio</a>
+            <a href="citas.html" class="nav-item">Citas</a>
+    </header>
+    <main>
+        <section>
+            <h2>Productos Disponibles</h2>
+            <div class="product">
+                <img src="https://via.placeholder.com/80" alt="Turbo Kit">
+                <div class="product-details">
+                    <h3>Turbo Kit</h3>
+                    <p>Mejora el rendimiento de tu motor.</p>
+                    <p>Precio: $500</p>
+                </div>
+                <button onclick="addToCart('Turbo Kit', 500)">Agregar</button>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/80" alt="Luces LED">
+                <div class="product-details">
+                    <h3>Luces LED</h3>
+                    <p>Personaliza el diseño de tu auto.</p>
+                    <p>Precio: $100</p>
+                </div>
+                <button onclick="addToCart('Luces LED', 100)">Agregar</button>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/80" alt="Alerón Deportivo">
+                <div class="product-details">
+                    <h3>Alerón Deportivo</h3>
+                    <p>Optimiza la aerodinámica.</p>
+                    <p>Precio: $300</p>
+                </div>
+                <button onclick="addToCart('Alerón Deportivo', 300)">Agregar</button>
+            </div>
+        </section>
+
+        <section id="cart">
+            <h2>Carrito</h2>
+            <ul id="cartItems"></ul>
+            <p class="total">Total: $<span id="totalAmount">0</span></p>
+            <button id="checkout" onclick="checkout()">Finalizar Compra</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 CarHub. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(product, price) {
+            cart.push({ product, price });
+            total += price;
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const totalAmount = document.getElementById('totalAmount');
+            cartItems.innerHTML = '';
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.product} - $${item.price}`;
+                cartItems.appendChild(li);
+            });
+            totalAmount.textContent = total;
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Tu carrito está vacío.');
+                return;
+            }
+            let receipt = '*** Ticket de Compra ***\n';
+            cart.forEach(item => {
+                receipt += `${item.product}: $${item.price}\n`;
+            });
+            receipt += `\nTotal: $${total}\n\n¡Gracias por tu compra!`;
+            alert(receipt);
+
+            // Limpiar carrito
+            cart = [];
+            total = 0;
+            updateCart();
+        }
+    </script>
+</body>
+</html>

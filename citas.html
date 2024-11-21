@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Citas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Citas</h1>
+        <img src=HUBB.jpg alt="rmwbco web & software" class="logo">        
+        <nav>
+            <a href="index.html" class="nav-item">Inicio</a>
+            <a href="citas.html" class="nav-item">Citas</a>
+        
+    </header>
+    <main>
+        <section class="news-grid">
+            <div class="card">
+                <div class="content">
+                    <h2>Agendar una Cita</h2>
+                    <form id="appointmentForm">
+                        <label for="name">Nombre:</label>
+                        <input type="text" id="name" required>
+
+                        <label for="date">Fecha:</label>
+                        <input type="date" id="date" required>
+
+                        <label for="time">Hora:</label>
+                        <input type="time" id="time" required>
+
+                        <label for="problemType">Tipo de Problema:</label>
+                        <select id="problemType" required>
+                            <option value="">Seleccione...</option>
+                            <option value="Mecánico">Mecánico</option>
+                            <option value="Motor">Motor</option>
+                            <option value="Eléctrico">Eléctrico</option>
+                        </select>
+
+                        <label for="problemDetails">Detalles del Problema:</label>
+                        <textarea id="problemDetails" rows="4" placeholder="Describa el problema con más detalle..." required></textarea>
+
+                        <button type="submit">Guardar Cita</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="content">
+                    <h2>Citas Programadas</h2>
+                    <ul id="appointmentList"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 CarHub.Co</p>
+    </footer>
+    <script>
+        const form = document.getElementById("appointmentForm");
+        const appointmentList = document.getElementById("appointmentList");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const date = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+            const problemType = document.getElementById("problemType").value;
+            const problemDetails = document.getElementById("problemDetails").value;
+
+            if (name && date && time && problemType && problemDetails) {
+                const listItem = document.createElement("li");
+                listItem.textContent = `
+                    Cita para ${name} el ${date} a las ${time}.
+                    Tipo de problema: ${problemType}.
+                    Detalles: ${problemDetails}.
+                `;
+                appointmentList.appendChild(listItem);
+
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>
